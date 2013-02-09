@@ -8,6 +8,8 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Point;
 
+import java.util.ArrayList;
+
 import java.lang.Math;
 
 /**
@@ -32,10 +34,21 @@ public class MathDraw extends JComponent {
     private static int CORNER_X;
     private static int CORNER_Y;
 
+    private ArrayList<Point> points = new ArrayList<Point>();
+
     private String mode;
 
     public MathDraw() {
-        mode = "Circle";
+        mode = "Heart";
+
+        Point center = new Point(CORNER_X + WIDTH / 2, CORNER_Y + HEIGHT / 2);
+        int r = 250;
+
+        for (int i = -9; i < 27; i++) {
+            double x = center.x + r * Math.cos(i*Math.PI*10/180);
+            double y = center.y + r * Math.sin(i*Math.PI*10/180);
+            points.add(new Point((int) x, (int) y));
+        }
     }
 
     public void paint(Graphics g) {
@@ -77,6 +90,32 @@ public class MathDraw extends JComponent {
                 g2.setColor(Color.GREEN);
                 g2.setStroke(new BasicStroke(4F));
                 g2.drawOval((int) (p1.getX() - diameter / 2), (int) (p1.getY() - diameter / 2), diameter, diameter);
+            }
+        } else if (mode.equals("Heart")) {
+            int r = 250;
+
+            g2.setColor(Color.RED);
+            g2.setStroke(new BasicStroke(2F));
+
+            for (int i = 0; i <= points.size() / 4; i++) {
+                Point p1 = points.get(i);
+                Point p2 = points.get(i + 9);
+                g.drawLine(p1.x, p1.y, p2.x, p2.y);
+            }
+            for (int i = points.size() / 2; i <= points.size() * 3 / 4; i++) {
+                Point p1 = points.get(i);
+                Point p2 = points.get((i + 9) % points.size());
+                g.drawLine(p1.x, p1.y, p2.x, p2.y);
+            }
+            for (int i = 0; i <= points.size() / 4; i++) {
+                Point p1 = points.get(i);
+                Point p2 = points.get((18 + i * 2) % points.size());
+                g.drawLine(p1.x, p1.y, p2.x, p2.y);
+            }
+            for (int i = points.size(); i >= points.size() * 3 / 4; i--) {
+                Point p1 = points.get(i % points.size());
+                Point p2 = points.get((18 - (points.size() - i) * 2) % points.size());
+                g.drawLine(p1.x, p1.y, p2.x, p2.y);
             }
         }
     }
