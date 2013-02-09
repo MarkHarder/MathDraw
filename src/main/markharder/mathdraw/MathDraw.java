@@ -49,14 +49,14 @@ public class MathDraw extends JComponent {
         Point center = new Point(CORNER_X + WIDTH / 2, CORNER_Y + HEIGHT / 2);
 
         if (mode.equals("Rotate Rectangle")) {
-            for (double theta = 0.0; theta < 360.0; theta += 30) {
+            for (double theta = 0.0; theta < 90.0; theta += 15) {
 
                 double radians = theta * Math.PI / 180;
 
                 Point p1 = new Point((int) (200 * Math.sin(radians) + center.getX()), (int) (200 * Math.cos(radians) + center.getY()));
-                Point p2 = new Point((int) (200 * Math.sin(Math.PI / 2) + center.getX()), (int) (Math.cos(Math.PI / 2) + center.getY()));
-                Point p3 = new Point((int) (200 * Math.sin(Math.PI) + center.getX()), (int) (200 * Math.cos(Math.PI) + center.getY()));
-                Point p4 = new Point((int) (200 * Math.sin(3 * Math.PI / 2) + center.getX()), (int) (200 * Math.cos(3 * Math.PI / 2) + center.getY()));
+                Point p2 = new Point((int) (200 * Math.sin(radians + Math.PI / 2) + center.getX()), (int) (200 * Math.cos(radians + Math.PI / 2) + center.getY()));
+                Point p3 = new Point((int) (200 * Math.sin(radians + Math.PI) + center.getX()), (int) (200 * Math.cos(radians + Math.PI) + center.getY()));
+                Point p4 = new Point((int) (200 * Math.sin(radians + 3 * Math.PI / 2) + center.getX()), (int) (200 * Math.cos(radians + 3 * Math.PI / 2) + center.getY()));
 
                 g2.setColor(Color.BLUE);
                 g2.setStroke(new BasicStroke(4F));
