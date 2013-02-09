@@ -3,7 +3,12 @@ package markharder.mathdraw;
 import javax.swing.JFrame;
 import javax.swing.JComponent;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Point;
+
+import java.lang.Math;
 
 /**
  * A series of mathematical based drawings
@@ -27,14 +32,40 @@ public class MathDraw extends JComponent {
     private static int CORNER_X;
     private static int CORNER_Y;
 
+    private String mode;
+
     public MathDraw() {
+        mode = "Rotate Rectangle";
     }
 
     public void paint(Graphics g) {
-        g.setColor(new Color(0, 0, 0));
-        g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        g.setColor(new Color(255, 255, 255));
-        g.fillRect(CORNER_X, CORNER_Y, WIDTH, HEIGHT);
+        Graphics2D g2 = (Graphics2D) g;
+
+        g2.setColor(new Color(0, 0, 0));
+        g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        g2.setColor(new Color(255, 255, 255));
+        g2.fillRect(CORNER_X, CORNER_Y, WIDTH, HEIGHT);
+
+        Point center = new Point(CORNER_X + WIDTH / 2, CORNER_Y + HEIGHT / 2);
+
+        if (mode.equals("Rotate Rectangle")) {
+            for (double theta = 0.0; theta < 360.0; theta += 30) {
+
+                double radians = theta * Math.PI / 180;
+
+                Point p1 = new Point((int) (200 * Math.sin(radians) + center.getX()), (int) (200 * Math.cos(radians) + center.getY()));
+                Point p2 = new Point((int) (200 * Math.sin(Math.PI / 2) + center.getX()), (int) (Math.cos(Math.PI / 2) + center.getY()));
+                Point p3 = new Point((int) (200 * Math.sin(Math.PI) + center.getX()), (int) (200 * Math.cos(Math.PI) + center.getY()));
+                Point p4 = new Point((int) (200 * Math.sin(3 * Math.PI / 2) + center.getX()), (int) (200 * Math.cos(3 * Math.PI / 2) + center.getY()));
+
+                g2.setColor(Color.BLUE);
+                g2.setStroke(new BasicStroke(4F));
+                g2.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
+                g2.drawLine((int) p2.getX(), (int) p2.getY(), (int) p3.getX(), (int) p3.getY());
+                g2.drawLine((int) p3.getX(), (int) p3.getY(), (int) p4.getX(), (int) p4.getY());
+                g2.drawLine((int) p4.getX(), (int) p4.getY(), (int) p1.getX(), (int) p1.getY());
+            }
+        }
     }
 
     public void start() {
