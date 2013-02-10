@@ -172,7 +172,7 @@ public class MathDraw extends JComponent implements Runnable {
         CORNER_Y = (SCREEN_HEIGHT - HEIGHT) / 2;
 
         canvas = new MathDraw();
-        canvas.rectangleAngle = new Slider(CORNER_X + WIDTH + 20, CORNER_Y, 25, 600, 50);
+        canvas.rectangleAngle = new Slider("Angle of Rotation", CORNER_X + WIDTH + 20, CORNER_Y, 25, 600, 50);
 
         frame.add(canvas);
         frame.setResizable(false);
