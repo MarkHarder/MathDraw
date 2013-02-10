@@ -19,7 +19,7 @@ import java.lang.Math;
  * @version 1.0
  */
 public class MathDraw extends JComponent {
-    private static MathDraw canvas;
+    public static MathDraw canvas;
     private static boolean running = false;
 
     // the width and height of the entire screen
@@ -36,7 +36,7 @@ public class MathDraw extends JComponent {
 
     private ArrayList<Point> points = new ArrayList<Point>();
 
-    private String mode;
+    public String mode;
 
     public MathDraw() {
         mode = "Heart";
@@ -61,7 +61,7 @@ public class MathDraw extends JComponent {
 
         Point center = new Point(CORNER_X + WIDTH / 2, CORNER_Y + HEIGHT / 2);
 
-        if (mode.equals("Rotate Rectangle")) {
+        if (mode.equals("Rectangle")) {
             for (double theta = 0.0; theta < 90.0; theta += 15) {
 
                 double radians = theta * Math.PI / 180;
@@ -152,6 +152,8 @@ public class MathDraw extends JComponent {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+
+        frame.addKeyListener(new Listener());
 
         canvas.start();
         System.exit(0);
