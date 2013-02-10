@@ -38,6 +38,10 @@ public class MathDraw extends JComponent implements Runnable {
     private Slider rectangleAngle;
     private Slider rectangleWidth;
 
+    private Slider circleCircumference;
+    private Slider circleRadius;
+    private Slider circleNumber;
+
     private ArrayList<Point> points = new ArrayList<Point>();
 
     public String mode;
@@ -56,7 +60,7 @@ public class MathDraw extends JComponent implements Runnable {
     }
 
     public void click() {
-        if (mode == "Rectangle") {
+        if (mode.equals("Rectangle")) {
             rectangleAngle.active = false;
             rectangleWidth.active = false;
 
@@ -64,6 +68,18 @@ public class MathDraw extends JComponent implements Runnable {
                 rectangleAngle.active = true;
             } else if (rectangleWidth.contains(Mouse.mse)) {
                 rectangleWidth.active = true;
+            }
+        } else if (mode.equals("Circle")) {
+            circleCircumference.active = false;
+            circleRadius.active = false;
+            circleNumber.active = false;
+
+            if (circleCircumference.contains(Mouse.mse)) {
+                circleCircumference.active = true;
+            } else if (circleRadius.contains(Mouse.mse)) {
+                circleRadius.active = true;
+            } else if (circleNumber.contains(Mouse.mse)) {
+                circleNumber.active = true;
             }
         }
     }
@@ -102,17 +118,23 @@ public class MathDraw extends JComponent implements Runnable {
             rectangleAngle.paint(g);
             rectangleWidth.paint(g);
         } else if (mode.equals("Circle")) {
-            for (double theta = 0.0; theta == 0.0 || theta % 360.0 != 0; theta += 30) {
-                double radians = theta * Math.PI / 180;
-                int center_diameter = 150;
-                int diameter = 150;
+            int number = 91 - (int) (circleNumber.getValue() * 90 / 100);
+            int circumference = 100 + (int) (circleCircumference.getValue());
+            int radius = 50 + (int) (circleRadius.getValue());
 
-                Point p1 = new Point((int) (center_diameter * Math.sin(radians) + center.getX()), (int) (center_diameter * Math.cos(radians) + center.getY()));
+            for (double theta = 0.0; theta < 360; theta += number) {
+                double radians = theta * Math.PI / 180;
+
+                Point p1 = new Point((int) (circumference * Math.sin(radians) + center.getX()), (int) (circumference * Math.cos(radians) + center.getY()));
 
                 g2.setColor(Color.GREEN);
                 g2.setStroke(new BasicStroke(4F));
-                g2.drawOval((int) (p1.getX() - diameter / 2), (int) (p1.getY() - diameter / 2), diameter, diameter);
+                g2.drawOval((int) (p1.getX() - radius / 2), (int) (p1.getY() - radius / 2), radius, radius);
             }
+
+            circleCircumference.paint(g);
+            circleRadius.paint(g);
+            circleNumber.paint(g);
         } else if (mode.equals("Heart")) {
             int r = 250;
 
@@ -181,6 +203,10 @@ public class MathDraw extends JComponent implements Runnable {
         canvas = new MathDraw();
         canvas.rectangleAngle = new Slider("Angle of Rotation", CORNER_X + WIDTH + 20, CORNER_Y, 25, 600, 50);
         canvas.rectangleWidth = new Slider("Rectangle Width", CORNER_X + WIDTH + 180, CORNER_Y, 25, 600, 50);
+
+        canvas.circleCircumference = new Slider("Circle Circumference", CORNER_X + WIDTH + 20, CORNER_Y, 25, 600, 50);
+        canvas.circleRadius = new Slider("Small Circle Radius", CORNER_X + WIDTH + 200, CORNER_Y, 25, 600, 50);
+        canvas.circleNumber = new Slider("Circle Number", CORNER_X + WIDTH + 380, CORNER_Y, 25, 600, 50);
 
         frame.add(canvas);
         frame.setResizable(false);
