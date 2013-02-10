@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import java.util.ArrayList;
 
@@ -33,6 +34,8 @@ public class MathDraw extends JComponent {
     // the location of the upper left corner of the application
     private static int CORNER_X;
     private static int CORNER_Y;
+
+    private Rectangle rectangleAngle;
 
     private ArrayList<Point> points = new ArrayList<Point>();
 
@@ -79,6 +82,11 @@ public class MathDraw extends JComponent {
                 g2.drawLine((int) p3.getX(), (int) p3.getY(), (int) p4.getX(), (int) p4.getY());
                 g2.drawLine((int) p4.getX(), (int) p4.getY(), (int) p1.getX(), (int) p1.getY());
             }
+
+            g2.setColor(new Color(255, 255, 255, 140));
+            g2.fillRect(CORNER_X + WIDTH + 30, CORNER_Y, 5, 600);
+            g2.setColor(Color.WHITE);
+            g2.fillRect(rectangleAngle.x, rectangleAngle.y, rectangleAngle.width, rectangleAngle.height);
         } else if (mode.equals("Circle")) {
             for (double theta = 0.0; theta == 0.0 || theta % 360.0 != 0; theta += 30) {
                 double radians = theta * Math.PI / 180;
@@ -154,6 +162,8 @@ public class MathDraw extends JComponent {
         frame.setVisible(true);
 
         frame.addKeyListener(new Listener());
+
+        canvas.rectangleAngle = new Rectangle(CORNER_X + WIDTH + 20, CORNER_Y, 25, 25);
 
         canvas.start();
         System.exit(0);
