@@ -35,12 +35,11 @@ public class MathDraw extends JComponent {
     private static int CORNER_X;
     private static int CORNER_Y;
 
-    private Rectangle rectangleAngle;
+    private Slider rectangleAngle;
 
     private ArrayList<Point> points = new ArrayList<Point>();
 
     public String mode;
-    public String active;
 
     public MathDraw() {
         mode = "Heart";
@@ -57,8 +56,8 @@ public class MathDraw extends JComponent {
 
     public void click() {
         if (mode == "Rectangle") {
-            if (Mouse.mse.x > CORNER_X + WIDTH + 20 && Mouse.mse.x < CORNER_X + WIDTH + 45) {
-                active = "Rectangle Angle";
+            if (rectangleAngle.contains(Mouse.mse)) {
+                rectangleAngle.active = true;
             }
         }
     }
@@ -74,7 +73,7 @@ public class MathDraw extends JComponent {
         Point center = new Point(CORNER_X + WIDTH / 2, CORNER_Y + HEIGHT / 2);
 
         if (mode.equals("Rectangle")) {
-            int adjust = 90 - (int) ((rectangleAngle.y - CORNER_Y) * 90 / 600.0);
+            int adjust = 91 - (int) (rectangleAngle.getValue() * 90 / 100);
 
             for (double theta = 0.0; theta < 90.0; theta += adjust) {
 
@@ -94,21 +93,7 @@ public class MathDraw extends JComponent {
                 g2.drawLine((int) p4.getX(), (int) p4.getY(), (int) p1.getX(), (int) p1.getY());
             }
 
-            g2.setColor(new Color(255, 255, 255, 140));
-            g2.fillRect(CORNER_X + WIDTH + 30, CORNER_Y, 5, 600);
-
-            if (Mouse.pressed && active == "Rectangle Angle") {
-                if ( Mouse.mse.getY() < CORNER_Y) {
-                    rectangleAngle.setLocation(CORNER_X + WIDTH + 20, CORNER_Y);
-                } else if (Mouse.mse.getY() > CORNER_Y + 575) {
-                    rectangleAngle.setLocation(CORNER_X + WIDTH + 20, CORNER_Y + 575);
-                } else {
-                    rectangleAngle.setLocation(CORNER_X + WIDTH + 20, (int) Mouse.mse.getY());
-                }
-            }
-
-            g2.setColor(Color.WHITE);
-            g2.fillRect(rectangleAngle.x, rectangleAngle.y, rectangleAngle.width, rectangleAngle.height);
+            rectangleAngle.paint(g);
         } else if (mode.equals("Circle")) {
             for (double theta = 0.0; theta == 0.0 || theta % 360.0 != 0; theta += 30) {
                 double radians = theta * Math.PI / 180;
@@ -177,7 +162,7 @@ public class MathDraw extends JComponent {
         CORNER_Y = (SCREEN_HEIGHT - HEIGHT) / 2;
 
         canvas = new MathDraw();
-        canvas.rectangleAngle = new Rectangle(CORNER_X + WIDTH + 20, CORNER_Y, 25, 25);
+        canvas.rectangleAngle = new Slider(CORNER_X + WIDTH + 20, CORNER_Y, 25, 600, 50);
 
         frame.add(canvas);
         frame.setResizable(false);
