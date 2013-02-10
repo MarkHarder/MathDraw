@@ -19,7 +19,7 @@ import java.lang.Math;
  * @author Mark Harder
  * @version 1.0
  */
-public class MathDraw extends JComponent {
+public class MathDraw extends JComponent implements Runnable {
     public static MathDraw canvas;
     private static boolean running = false;
 
@@ -62,7 +62,7 @@ public class MathDraw extends JComponent {
         }
     }
 
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
         g2.setColor(new Color(0, 0, 0));
@@ -138,8 +138,18 @@ public class MathDraw extends JComponent {
     public void start() {
         running = true;
 
+        new Thread(this).start();
+    }
+
+    public void run() {
         while(running) {
             repaint();
+
+            try {
+                Thread.sleep(9);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -175,7 +185,6 @@ public class MathDraw extends JComponent {
 
 
         canvas.start();
-        System.exit(0);
     }
 }
 
