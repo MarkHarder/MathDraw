@@ -40,6 +40,7 @@ public class MathDraw extends JComponent {
     private ArrayList<Point> points = new ArrayList<Point>();
 
     public String mode;
+    public String active;
 
     public MathDraw() {
         mode = "Heart";
@@ -51,6 +52,14 @@ public class MathDraw extends JComponent {
             double x = center.x + r * Math.cos(i*Math.PI*10/180);
             double y = center.y + r * Math.sin(i*Math.PI*10/180);
             points.add(new Point((int) x, (int) y));
+        }
+    }
+
+    public void click() {
+        if (mode == "Rectangle") {
+            if (Mouse.mse.x > CORNER_X + WIDTH + 20 && Mouse.mse.x < CORNER_X + WIDTH + 45) {
+                active = "Rectangle Angle";
+            }
         }
     }
 
@@ -85,6 +94,11 @@ public class MathDraw extends JComponent {
 
             g2.setColor(new Color(255, 255, 255, 140));
             g2.fillRect(CORNER_X + WIDTH + 30, CORNER_Y, 5, 600);
+
+            if (Mouse.pressed && active == "Rectangle Angle") {
+                rectangleAngle.setLocation(CORNER_X + WIDTH + 20, (int) Mouse.mse.getY());
+            }
+
             g2.setColor(Color.WHITE);
             g2.fillRect(rectangleAngle.x, rectangleAngle.y, rectangleAngle.width, rectangleAngle.height);
         } else if (mode.equals("Circle")) {
@@ -162,6 +176,8 @@ public class MathDraw extends JComponent {
         frame.setVisible(true);
 
         frame.addKeyListener(new Listener());
+        frame.addMouseListener(new Mouse());
+        frame.addMouseMotionListener(new Mouse());
 
         canvas.rectangleAngle = new Rectangle(CORNER_X + WIDTH + 20, CORNER_Y, 25, 25);
 
