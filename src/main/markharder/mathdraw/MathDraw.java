@@ -8,6 +8,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Font;
 
 import java.util.ArrayList;
 
@@ -49,7 +50,7 @@ public class MathDraw extends JComponent implements Runnable {
     public String mode;
 
     public MathDraw() {
-        mode = "Heart";
+        mode = "Instructions";
     }
 
     public void findHeartPoints() {
@@ -105,9 +106,29 @@ public class MathDraw extends JComponent implements Runnable {
         g2.setColor(new Color(255, 255, 255));
         g2.fillRect(CORNER_X, CORNER_Y, WIDTH, HEIGHT);
 
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Courier New", Font.BOLD, 18));
+        g2.drawString("Press 'q' to quit", CORNER_X, CORNER_Y + HEIGHT + 20);
+
         Point center = new Point(CORNER_X + WIDTH / 2, CORNER_Y + HEIGHT / 2);
 
-        if (mode.equals("Rectangle")) {
+        if (mode.equals("Instructions")) {
+            g2.setColor(Color.BLACK);
+            g2.setFont(new Font("Courier New", Font.BOLD, 27));
+            g2.drawString("MathDraw: Math related drawings", CORNER_X + 30, CORNER_Y + 50);
+            g2.drawString("-------------------------------", CORNER_X + 30, CORNER_Y + 80);
+            g2.drawString("Press a number of view a drawing", CORNER_X + 30, CORNER_Y + 110);
+
+            g2.setFont(new Font("Courier New", Font.BOLD, 40));
+            g2.drawString("1. Instructions", CORNER_X + 30, CORNER_Y + 200);
+            g2.drawString("2. Rotational Rectangle", CORNER_X + 30, CORNER_Y + 250);
+            g2.drawString("3. Circle of Circles", CORNER_X + 30, CORNER_Y + 300);
+            g2.drawString("4. Line Heart", CORNER_X + 30, CORNER_Y + 350);
+            g2.drawString("5. Clear Screen", CORNER_X +  30, CORNER_Y + 400);
+
+            g2.setFont(new Font("Courier New", Font.BOLD, 27));
+            g2.drawString("Press 'q' to quit", CORNER_X + 30, CORNER_Y + 480);
+        } else if (mode.equals("Rectangle")) {
             int adjust = 91 - (int) (rectangleAngle.getValue() * 90 / 100);
             int width = 100 + (int) (rectangleWidth.getValue() * 2);
 
@@ -195,6 +216,8 @@ public class MathDraw extends JComponent implements Runnable {
                 e.printStackTrace();
             }
         }
+
+        System.exit(0);
     }
 
     public void stop() {

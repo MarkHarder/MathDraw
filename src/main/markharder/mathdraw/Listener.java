@@ -16,16 +16,22 @@ public class Listener implements KeyListener {
 
         switch (key) {
         case KeyEvent.VK_1:
-            MathDraw.canvas.mode = "Rectangle";
+            MathDraw.canvas.mode = "Instructions";
             break;
         case KeyEvent.VK_2:
-            MathDraw.canvas.mode = "Circle";
+            MathDraw.canvas.mode = "Rectangle";
             break;
         case KeyEvent.VK_3:
-            MathDraw.canvas.mode = "Heart";
+            MathDraw.canvas.mode = "Circle";
             break;
         case KeyEvent.VK_4:
+            MathDraw.canvas.mode = "Heart";
+            break;
+        case KeyEvent.VK_5:
             MathDraw.canvas.mode = "Clear";
+            break;
+        case KeyEvent.VK_Q:
+            MathDraw.canvas.stop();
             break;
         }
     }
