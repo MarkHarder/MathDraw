@@ -42,15 +42,22 @@ public class MathDraw extends JComponent implements Runnable {
     private Slider circleRadius;
     private Slider circleNumber;
 
+    private Slider heartDiameter;
+
     private ArrayList<Point> points = new ArrayList<Point>();
 
     public String mode;
 
     public MathDraw() {
         mode = "Heart";
+    }
+
+    public void findHeartPoints() {
+        points = new ArrayList<Point>();
 
         Point center = new Point(CORNER_X + WIDTH / 2, CORNER_Y + HEIGHT / 2);
-        int r = 250;
+        int r = 150 + (int) (heartDiameter.getValue());
+
 
         for (int i = -9; i < 27; i++) {
             double x = center.x + r * Math.cos(i*Math.PI*10/180);
@@ -80,6 +87,12 @@ public class MathDraw extends JComponent implements Runnable {
                 circleRadius.active = true;
             } else if (circleNumber.contains(Mouse.mse)) {
                 circleNumber.active = true;
+            }
+        } else if (mode.equals("Heart")) {
+            heartDiameter.active = false;
+
+            if (heartDiameter.contains(Mouse.mse)) {
+                heartDiameter.active = true;
             }
         }
     }
@@ -136,7 +149,7 @@ public class MathDraw extends JComponent implements Runnable {
             circleRadius.paint(g);
             circleNumber.paint(g);
         } else if (mode.equals("Heart")) {
-            int r = 250;
+            findHeartPoints();
 
             g2.setColor(Color.RED);
             g2.setStroke(new BasicStroke(2F));
@@ -161,6 +174,8 @@ public class MathDraw extends JComponent implements Runnable {
                 Point p2 = points.get((18 - (points.size() - i) * 2) % points.size());
                 g.drawLine(p1.x, p1.y, p2.x, p2.y);
             }
+
+            heartDiameter.paint(g);
         }
     }
 
@@ -207,6 +222,8 @@ public class MathDraw extends JComponent implements Runnable {
         canvas.circleCircumference = new Slider("Circle Circumference", CORNER_X + WIDTH + 20, CORNER_Y, 25, 600, 50);
         canvas.circleRadius = new Slider("Small Circle Radius", CORNER_X + WIDTH + 200, CORNER_Y, 25, 600, 50);
         canvas.circleNumber = new Slider("Circle Number", CORNER_X + WIDTH + 380, CORNER_Y, 25, 600, 50);
+
+        canvas.heartDiameter = new Slider("Heart Circumference", CORNER_X + WIDTH + 20, CORNER_Y, 25, 600, 50);
 
         frame.add(canvas);
         frame.setResizable(false);
