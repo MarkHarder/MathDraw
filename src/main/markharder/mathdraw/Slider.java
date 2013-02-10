@@ -42,8 +42,8 @@ public class Slider {
         if (active && Mouse.pressed) {
             if (Mouse.mse.y < slot.y - slide.width / 2) {
                 slide.setLocation(slide.x, slot.y - slide.width / 2);
-            } else if (Mouse.mse.y > slot.y + slot.height) {
-                slide.setLocation(slide.x, slot.y + slot.height);
+            } else if (Mouse.mse.y > slot.y + slot.height - slide.width / 2) {
+                slide.setLocation(slide.x, slot.y + slot.height - slide.width / 2);
             } else {
                 slide.setLocation(slide.x, Mouse.mse.y);
             }
@@ -58,7 +58,7 @@ public class Slider {
     }
 
     public boolean contains(Point p) {
-        return p.y > slot.y && p.y < slot.y + slot.height && p.x > slide.x && p.x < slide.x + slide.width;
+        return p.y > slot.y - slide.width / 2 && p.y < slot.y + slot.height + slide.width / 2 && p.x > slide.x && p.x < slide.x + slide.width;
     }
 }
 

@@ -36,6 +36,7 @@ public class MathDraw extends JComponent implements Runnable {
     private static int CORNER_Y;
 
     private Slider rectangleAngle;
+    private Slider rectangleWidth;
 
     private ArrayList<Point> points = new ArrayList<Point>();
 
@@ -56,8 +57,13 @@ public class MathDraw extends JComponent implements Runnable {
 
     public void click() {
         if (mode == "Rectangle") {
+            rectangleAngle.active = false;
+            rectangleWidth.active = false;
+
             if (rectangleAngle.contains(Mouse.mse)) {
                 rectangleAngle.active = true;
+            } else if (rectangleWidth.contains(Mouse.mse)) {
+                rectangleWidth.active = true;
             }
         }
     }
@@ -74,11 +80,11 @@ public class MathDraw extends JComponent implements Runnable {
 
         if (mode.equals("Rectangle")) {
             int adjust = 91 - (int) (rectangleAngle.getValue() * 90 / 100);
+            int width = 100 + (int) (rectangleWidth.getValue() * 2);
 
             for (double theta = 0.0; theta < 90.0; theta += adjust) {
 
                 double radians = theta * Math.PI / 180;
-                int width = 200;
 
                 Point p1 = new Point((int) (width * Math.sin(radians) + center.getX()), (int) (width * Math.cos(radians) + center.getY()));
                 Point p2 = new Point((int) (width * Math.sin(radians + Math.PI / 2) + center.getX()), (int) (width * Math.cos(radians + Math.PI / 2) + center.getY()));
@@ -94,6 +100,7 @@ public class MathDraw extends JComponent implements Runnable {
             }
 
             rectangleAngle.paint(g);
+            rectangleWidth.paint(g);
         } else if (mode.equals("Circle")) {
             for (double theta = 0.0; theta == 0.0 || theta % 360.0 != 0; theta += 30) {
                 double radians = theta * Math.PI / 180;
@@ -173,6 +180,7 @@ public class MathDraw extends JComponent implements Runnable {
 
         canvas = new MathDraw();
         canvas.rectangleAngle = new Slider("Angle of Rotation", CORNER_X + WIDTH + 20, CORNER_Y, 25, 600, 50);
+        canvas.rectangleWidth = new Slider("Rectangle Width", CORNER_X + WIDTH + 180, CORNER_Y, 25, 600, 50);
 
         frame.add(canvas);
         frame.setResizable(false);
