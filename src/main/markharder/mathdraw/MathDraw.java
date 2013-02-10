@@ -97,8 +97,14 @@ public class MathDraw extends JComponent {
             g2.setColor(new Color(255, 255, 255, 140));
             g2.fillRect(CORNER_X + WIDTH + 30, CORNER_Y, 5, 600);
 
-            if (Mouse.pressed && active == "Rectangle Angle" && Mouse.mse.getY() > CORNER_Y && Mouse.mse.getY() < CORNER_Y + 575) {
-                rectangleAngle.setLocation(CORNER_X + WIDTH + 20, (int) Mouse.mse.getY());
+            if (Mouse.pressed && active == "Rectangle Angle") {
+                if ( Mouse.mse.getY() < CORNER_Y) {
+                    rectangleAngle.setLocation(CORNER_X + WIDTH + 20, CORNER_Y);
+                } else if (Mouse.mse.getY() > CORNER_Y + 575) {
+                    rectangleAngle.setLocation(CORNER_X + WIDTH + 20, CORNER_Y + 575);
+                } else {
+                    rectangleAngle.setLocation(CORNER_X + WIDTH + 20, (int) Mouse.mse.getY());
+                }
             }
 
             g2.setColor(Color.WHITE);
