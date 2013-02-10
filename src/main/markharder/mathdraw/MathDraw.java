@@ -74,7 +74,9 @@ public class MathDraw extends JComponent {
         Point center = new Point(CORNER_X + WIDTH / 2, CORNER_Y + HEIGHT / 2);
 
         if (mode.equals("Rectangle")) {
-            for (double theta = 0.0; theta < 90.0; theta += 15) {
+            int adjust = 90 - (int) ((rectangleAngle.y - CORNER_Y) * 90 / 600.0);
+
+            for (double theta = 0.0; theta < 90.0; theta += adjust) {
 
                 double radians = theta * Math.PI / 180;
                 int width = 200;
@@ -95,7 +97,7 @@ public class MathDraw extends JComponent {
             g2.setColor(new Color(255, 255, 255, 140));
             g2.fillRect(CORNER_X + WIDTH + 30, CORNER_Y, 5, 600);
 
-            if (Mouse.pressed && active == "Rectangle Angle") {
+            if (Mouse.pressed && active == "Rectangle Angle" && Mouse.mse.getY() > CORNER_Y && Mouse.mse.getY() < CORNER_Y + 575) {
                 rectangleAngle.setLocation(CORNER_X + WIDTH + 20, (int) Mouse.mse.getY());
             }
 
@@ -169,6 +171,7 @@ public class MathDraw extends JComponent {
         CORNER_Y = (SCREEN_HEIGHT - HEIGHT) / 2;
 
         canvas = new MathDraw();
+        canvas.rectangleAngle = new Rectangle(CORNER_X + WIDTH + 20, CORNER_Y, 25, 25);
 
         frame.add(canvas);
         frame.setResizable(false);
@@ -179,7 +182,6 @@ public class MathDraw extends JComponent {
         frame.addMouseListener(new Mouse());
         frame.addMouseMotionListener(new Mouse());
 
-        canvas.rectangleAngle = new Rectangle(CORNER_X + WIDTH + 20, CORNER_Y, 25, 25);
 
         canvas.start();
         System.exit(0);
