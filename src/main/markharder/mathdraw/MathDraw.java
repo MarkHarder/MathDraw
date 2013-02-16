@@ -128,6 +128,8 @@ public class MathDraw extends JComponent implements Runnable {
 
         Point center = new Point(CORNER_X + WIDTH / 2, CORNER_Y + HEIGHT / 2);
 
+        g2.setStroke(new BasicStroke(1f));
+
         if (mode.equals("Instructions")) {
             g2.setColor(Color.BLACK);
             g2.setFont(new Font("Courier New", Font.BOLD, 27));
@@ -187,14 +189,13 @@ public class MathDraw extends JComponent implements Runnable {
             circleRadius.paint(g);
             circleNumber.paint(g);
         } else if (mode.equals("Web")) {
+            g2.setStroke(new BasicStroke(4f));
             int spacing = 3 + (int) (Math.sqrt(webSpace.getValue()) * 10);
             int colorShift = (int) (webColor.getValue() / 100 * 255);
             int transparency = (int) (webTransparency.getValue() / 100 * 255);
             for (int i = 0; i < HEIGHT / spacing; i += 1) {
                 int colorAmount = (int) (colorShift / ((double) HEIGHT / spacing));
                 int transparencyAmount = (int) (transparency / ((double) HEIGHT / spacing));
-                System.out.println("--" + i + "::" + HEIGHT);
-                System.out.println(HEIGHT / spacing + "***" + transparencyAmount + "++" + i * transparencyAmount);
                 g2.setColor(new Color(255 - i * colorAmount, 0, i * colorAmount, 255 - transparencyAmount * i));
 
                 g2.drawLine(CORNER_X, CORNER_Y + i * spacing, CORNER_X + i * spacing, CORNER_Y + HEIGHT);
