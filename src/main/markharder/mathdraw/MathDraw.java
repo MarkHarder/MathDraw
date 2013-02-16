@@ -43,6 +43,10 @@ public class MathDraw extends JComponent implements Runnable {
     private Slider circleRadius;
     private Slider circleNumber;
 
+    private Slider webSpace;
+    private Slider webColor;
+    private Slider webTransparency;
+
     private Slider heartDiameter;
 
     private ArrayList<Point> points = new ArrayList<Point>();
@@ -89,6 +93,18 @@ public class MathDraw extends JComponent implements Runnable {
             } else if (circleNumber.contains(Mouse.mse)) {
                 circleNumber.active = true;
             }
+        } else if (mode.equals("Web")) {
+            webColor.active = false;
+            webTransparency.active = false;
+            webSpace.active = false;
+
+            if (webColor.contains(Mouse.mse)) {
+                webColor.active = true;
+            } else if (webTransparency.contains(Mouse.mse)) {
+                webTransparency.active = true;
+            } else if (webSpace.contains(Mouse.mse)) {
+                webSpace.active = true;
+            }
         } else if (mode.equals("Heart")) {
             heartDiameter.active = false;
 
@@ -124,10 +140,11 @@ public class MathDraw extends JComponent implements Runnable {
             g2.drawString("2. Rotational Rectangle", CORNER_X + 30, CORNER_Y + 250);
             g2.drawString("3. Circle of Circles", CORNER_X + 30, CORNER_Y + 300);
             g2.drawString("4. Line Heart", CORNER_X + 30, CORNER_Y + 350);
-            g2.drawString("5. Clear Screen", CORNER_X +  30, CORNER_Y + 400);
+            g2.drawString("5. Line Web", CORNER_X + 30, CORNER_Y + 400);
+            g2.drawString("6. Clear Screen", CORNER_X +  30, CORNER_Y + 450);
 
             g2.setFont(new Font("Courier New", Font.BOLD, 27));
-            g2.drawString("Press 'q' to quit", CORNER_X + 30, CORNER_Y + 480);
+            g2.drawString("Press 'q' to quit", CORNER_X + 30, CORNER_Y + 530);
         } else if (mode.equals("Rectangle")) {
             int adjust = 91 - (int) (rectangleAngle.getValue() * 90 / 100);
             int width = 100 + (int) (rectangleWidth.getValue() * 2);
@@ -169,6 +186,23 @@ public class MathDraw extends JComponent implements Runnable {
             circleCircumference.paint(g);
             circleRadius.paint(g);
             circleNumber.paint(g);
+        } else if (mode.equals("Web")) {
+            int spacing = 3 + (int) (Math.sqrt(webSpace.getValue()) * 10);
+            int colorShift = (int) (webColor.getValue() / 100 * 255);
+            int transparency = (int) (webTransparency.getValue() / 100 * 255);
+            for (int i = 0; i < HEIGHT / spacing; i += 1) {
+                int colorAmount = (int) (colorShift / ((double) HEIGHT / spacing));
+                int transparencyAmount = (int) (transparency / ((double) HEIGHT / spacing));
+                System.out.println("--" + i + "::" + HEIGHT);
+                System.out.println(HEIGHT / spacing + "***" + transparencyAmount + "++" + i * transparencyAmount);
+                g2.setColor(new Color(255 - i * colorAmount, 0, i * colorAmount, 255 - transparencyAmount * i));
+
+                g2.drawLine(CORNER_X, CORNER_Y + i * spacing, CORNER_X + i * spacing, CORNER_Y + HEIGHT);
+            }
+
+            webSpace.paint(g);
+            webColor.paint(g);
+            webTransparency.paint(g);
         } else if (mode.equals("Heart")) {
             findHeartPoints();
 
@@ -246,7 +280,11 @@ public class MathDraw extends JComponent implements Runnable {
         canvas.circleRadius = new Slider("Small Circle Radius", CORNER_X + WIDTH + 200, CORNER_Y, 25, 600, 50);
         canvas.circleNumber = new Slider("Circle Number", CORNER_X + WIDTH + 380, CORNER_Y, 25, 600, 50);
 
-        canvas.heartDiameter = new Slider("Heart Circumference", CORNER_X + WIDTH + 20, CORNER_Y, 25, 600, 50);
+        canvas.webSpace = new Slider("Web Spacing", CORNER_X + WIDTH + 20, CORNER_Y, 25, 600, 50);
+        canvas.webColor = new Slider("Web Color Shift", CORNER_X + WIDTH + 200, CORNER_Y, 25, 600, 50);
+        canvas.webTransparency = new Slider("Web Transparency", CORNER_X + WIDTH + 380, CORNER_Y, 25, 600, 50);
+
+        canvas.heartDiameter = new Slider("Heart Size", CORNER_X + WIDTH + 20, CORNER_Y, 25, 600, 50);
 
         frame.add(canvas);
         frame.setResizable(false);

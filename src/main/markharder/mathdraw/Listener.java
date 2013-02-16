@@ -28,6 +28,9 @@ public class Listener implements KeyListener {
             MathDraw.canvas.mode = "Heart";
             break;
         case KeyEvent.VK_5:
+            MathDraw.canvas.mode = "Web";
+            break;
+        case KeyEvent.VK_6:
             MathDraw.canvas.mode = "Clear";
             break;
         case KeyEvent.VK_Q:
